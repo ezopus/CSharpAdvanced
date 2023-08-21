@@ -9,7 +9,7 @@ while ((input = Console.ReadLine()) != "end")
     {
         cars.Enqueue(input);
     }
-    else if (input == "green")
+    else
     {
         for (int i = 0; i < throughput && cars.Any(); i++)
         {
