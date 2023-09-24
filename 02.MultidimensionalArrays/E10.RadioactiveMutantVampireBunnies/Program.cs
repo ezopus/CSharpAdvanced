@@ -47,6 +47,8 @@ while (isAlive && !hasWon)
             if (field[row, col] == 'B')
             {
                 int[] currentBunny = new int[2];
+                currentBunny[0] = row;
+                currentBunny[1] = col;
                 bunnies.Enqueue(currentBunny);
             }
         }
@@ -101,6 +103,7 @@ void PlayerStep(ref int playerRow, ref int playerCol, char[,] field, char comman
             }
             else
             {
+                field[playerRow, playerCol] = '.';
                 hasWon = true;
             }
             break;
@@ -120,6 +123,7 @@ void PlayerStep(ref int playerRow, ref int playerCol, char[,] field, char comman
             }
             else
             {
+                field[playerRow, playerCol] = '.';
                 hasWon = true;
             }
             break;
@@ -139,6 +143,7 @@ void PlayerStep(ref int playerRow, ref int playerCol, char[,] field, char comman
             }
             else
             {
+                field[playerRow, playerCol] = '.';
                 hasWon = true;
             }
             break;
@@ -158,6 +163,7 @@ void PlayerStep(ref int playerRow, ref int playerCol, char[,] field, char comman
             }
             else
             {
+                field[playerRow, playerCol] = '.';
                 hasWon = true;
             }
             break;
@@ -166,58 +172,29 @@ void PlayerStep(ref int playerRow, ref int playerCol, char[,] field, char comman
 
 void BunnySpread(char[,] field, int currentBunnyRow, int currentBunnyCol)
 {
-    //up left
-    if (currentBunnyRow - 1 >= 0 &&
-        currentBunnyCol - 1 >= 0 &&
-        field[currentBunnyRow - 1, currentBunnyCol - 1] != 'B')
-    {
-        field[currentBunnyRow - 1, currentBunnyCol - 1] = 'B';
-    }
-    //up mid
-    if (currentBunnyRow - 1 >= 0 &&
-        field[currentBunnyRow - 1, currentBunnyCol] != 'B')
+    //up
+    if (currentBunnyRow - 1 >= 0)
     {
         field[currentBunnyRow - 1, currentBunnyCol] = 'B';
     }
-    //up right
-    if (currentBunnyRow - 1 >= 0 &&
-        currentBunnyCol + 1 < field.GetLength(1) &&
-        field[currentBunnyRow - 1, currentBunnyCol + 1] != 'B')
-    {
-        field[currentBunnyRow - 1, currentBunnyCol + 1] = 'B';
-    }
+    
     //left
-    if (currentBunnyCol - 1 >= 0 &&
-        field[currentBunnyRow, currentBunnyCol - 1] != 'B')
+    if (currentBunnyCol - 1 >= 0)
     {
         field[currentBunnyRow, currentBunnyCol - 1] = 'B';
     }
     //right
-    if (currentBunnyCol + 1 < field.GetLength(1) &&
-        field[currentBunnyRow, currentBunnyCol + 1] != 'B')
+    if (currentBunnyCol + 1 < field.GetLength(1))
     {
         field[currentBunnyRow, currentBunnyCol + 1] = 'B';
     }
-    //down left
-    if (currentBunnyRow + 1 < field.GetLength(0) &&
-        currentBunnyCol - 1 >= 0 &&
-        field[currentBunnyRow + 1, currentBunnyCol - 1] != 'B')
-    {
-        field[currentBunnyRow + 1, currentBunnyCol - 1] = 'B';
-    }
-    //down mid
-    if (currentBunnyRow + 1 < field.GetLength(0) &&
-        field[currentBunnyRow + 1, currentBunnyCol] != 'B')
+    
+    //down
+    if (currentBunnyRow + 1 < field.GetLength(0))
     {
         field[currentBunnyRow + 1, currentBunnyCol] = 'B';
     }
-    //down right
-    if (currentBunnyRow + 1 < field.GetLength(0) &&
-        currentBunnyCol + 1 < field.GetLength(1) &&
-        field[currentBunnyRow + 1, currentBunnyCol + 1] != 'B')
-    {
-        field[currentBunnyRow + 1, currentBunnyCol + 1] = 'B';
-    }
+   
 }
 
 /*
