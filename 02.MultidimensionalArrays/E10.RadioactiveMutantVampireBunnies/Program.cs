@@ -16,12 +16,12 @@ for (int rows = 0; rows < fieldRows; rows++)
     string oneRow = Console.ReadLine();
     for (int cols = 0; cols < fieldCols; cols++)
     {
+        field[rows, cols] = oneRow[cols];
         if (oneRow[cols] == 'P')
         {
             playerRow = rows;
             playerCol = cols;
         }
-        field[rows, cols] = oneRow[cols];
     }
 }
 
@@ -36,7 +36,7 @@ while (isAlive && !hasWon)
     char currentCommand = commands[commandCounter++];
 
     //player move
-    PlayerStep(ref playerRow, ref playerCol, field, currentCommand, ref isAlive, ref hasWon);
+    PlayerStep(currentCommand);
 
     //find all current bunnies
     Queue<int[]> bunnies = new Queue<int[]>();
@@ -60,7 +60,7 @@ while (isAlive && !hasWon)
         int[] bunny = bunnies.Dequeue();
         int bunnyRow = bunny[0];
         int bunnyCol = bunny[1];
-        BunnySpread(field, bunnyRow, bunnyCol);
+        BunnySpread(bunnyRow, bunnyCol);
     }
 }
 
@@ -70,7 +70,6 @@ for (int row = 0; row < fieldRows; row++)
     {
         Console.Write(field[row, col]);
     }
-
     Console.WriteLine();
 }
 
@@ -83,7 +82,7 @@ else
     Console.WriteLine($"dead: {playerRow} {playerCol}");
 }
 
-void PlayerStep(ref int playerRow, ref int playerCol, char[,] field, char command, ref bool isAlive, ref bool hasWon)
+void PlayerStep(char command)
 {
     switch (command)
     {
@@ -170,31 +169,48 @@ void PlayerStep(ref int playerRow, ref int playerCol, char[,] field, char comman
     }
 }
 
-void BunnySpread(char[,] field, int currentBunnyRow, int currentBunnyCol)
+void BunnySpread(int currentBunnyRow, int currentBunnyCol)
 {
     //up
     if (currentBunnyRow - 1 >= 0)
     {
+        if (field[currentBunnyRow - 1, currentBunnyCol] == 'P')
+        {
+            isAlive = false;
+        }
         field[currentBunnyRow - 1, currentBunnyCol] = 'B';
     }
     
     //left
     if (currentBunnyCol - 1 >= 0)
     {
+        if (field[currentBunnyRow, currentBunnyCol - 1] == 'P')
+        {
+            isAlive = false;
+        }
         field[currentBunnyRow, currentBunnyCol - 1] = 'B';
     }
     //right
     if (currentBunnyCol + 1 < field.GetLength(1))
     {
+        if (field[currentBunnyRow, currentBunnyCol + 1] == 'P')
+        {
+            isAlive = false;
+        }
         field[currentBunnyRow, currentBunnyCol + 1] = 'B';
     }
     
     //down
     if (currentBunnyRow + 1 < field.GetLength(0))
     {
+        if (field[currentBunnyRow + 1, currentBunnyCol] == 'P')
+        {
+            isAlive = false;
+        }
         field[currentBunnyRow + 1, currentBunnyCol] = 'B';
     }
-   
+
+    
 }
 
 /*
