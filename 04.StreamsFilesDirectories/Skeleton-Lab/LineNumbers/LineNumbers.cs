@@ -13,6 +13,18 @@
 
         public static void RewriteFileWithLineNumbers(string inputFilePath, string outputFilePath)
         {
+            using (StreamReader reader = new StreamReader(inputFilePath))
+            {
+                using (StreamWriter writer = new StreamWriter(outputFilePath))
+                {
+                    int numbering = 1;
+                    while (reader.EndOfStream == false)
+                    {
+                        string line = reader.ReadLine();
+                        writer.WriteLine($"{numbering++}. {line}");
+                    }
+                }
+            }
         }
     }
 }
