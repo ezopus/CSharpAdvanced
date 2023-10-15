@@ -3,6 +3,7 @@
     .Split(",", StringSplitOptions.RemoveEmptyEntries)
     .Select(int.Parse)
     .ToArray();
+
 int[] soldierStrikes = Console
     .ReadLine()
     .Split(",", StringSplitOptions.RemoveEmptyEntries)
@@ -16,49 +17,29 @@ int totalKilled = 0;
 
 while (monsters.Any() && strikes.Any())
 {
-    int monster = monsters.Peek();
-    int hit = strikes.Peek();
-    while (monster > 0)
+    int monster = monsters.Dequeue();
+    int hit = strikes.Pop();
+    if (hit >= monster)
     {
-        if (monster < hit)
+        totalKilled++;
+        hit -= monster;
+        if (hit > 0)
         {
-            monsters.Dequeue();
-            totalKilled++;
-            strikes.Pop();
-            int remainingHitPoints = hit - monster;
-            if (monsters.Any())
-            {
-                monster = monsters.Peek();
-                if (monster - remainingHitPoints > 0)
-                {
-                    monster -= remainingHitPoints;
-                }
-            }
-            else
-            {
-                break;
-            }
-        }
-        else if (monster == strikes.Peek())
-        {
-            monsters.Dequeue();
-            totalKilled++;
-            strikes.Pop();
-        }
-        else
-        {
-            monster -= strikes.Pop();
-            monsters.Enqueue(monsters.Dequeue());
-            monster = monsters.Peek();
             if (strikes.Any())
             {
-                hit = strikes.Peek();
+                int remainder = strikes.Pop() + hit;
+                strikes.Push(remainder);
             }
             else
             {
-                break;
+                strikes.Push(hit);
             }
         }
+    }
+    else
+    {
+        monster -= hit;
+        monsters.Enqueue(monster);
     }
 }
 
@@ -66,12 +47,16 @@ if (!monsters.Any())
 {
     Console.WriteLine("All monsters have been killed!");
 }
-else
+
+if (!strikes.Any())
 {
     Console.WriteLine("The soldier has been defeated.");
 }
 
 Console.WriteLine($"Total monsters killed: {totalKilled}");
 
-
+/*
+20,15,10
+5,15,10,25
+ */
 
